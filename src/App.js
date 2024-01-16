@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchData } from './redux';
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Redux async example</h1>
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: 'red'}}>Error: {error}</p>}
+      {data && (
+        <div>
+          <h2>Data:</h2>
+          <pre>{JSON.stringify(data, null, 1)}</pre>
+        </div>
+      )}
     </div>
   );
 }
